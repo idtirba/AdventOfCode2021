@@ -41,11 +41,11 @@ end
 def more_than_one_small_twice?(path)
   return true if path.last==path.last.downcase && path.count(path.last) > 2
   smallTwices=Set.new
-	path.each do |p|
+  path.each do |p|
     smallTwices << p if p==p.downcase && path.count(p) > 1
     return true if smallTwices.length > 1
-	end
-	false
+  end
+  false
 end
 
 def is_finished?(path)
