@@ -110,7 +110,7 @@ end
 def explode(str, ndx)
 	x=ndx
 	array=''
-	while str[x] != ']'
+	while str[x]!=']'
 		array+=str[x]
 		x+=1
 	end
