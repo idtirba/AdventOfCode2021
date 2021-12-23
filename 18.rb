@@ -205,7 +205,8 @@ p magnitude(JSON.parse(str))
 
 max=0
 for x in 0..input.length-1
-	for y in x..input.length-1
+	for y in 0..input.length-1
+		next if x==y
 		str='['+input[x]+','+input[y]+']'
 		str=reduce(str)
 		max=[max,magnitude(JSON.parse(str))].max
