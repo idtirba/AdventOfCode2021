@@ -80,9 +80,9 @@ input='[[[3,9],[7,2]],[[8,4],[[5,6],0]]]
 [[[5,[8,6]],[[1,2],2]],[[[1,4],6],[5,[7,1]]]]
 [[[[1,5],8],[0,0]],4]
 [[[7,[6,8]],3],[[5,1],[[2,8],[4,6]]]]
-[3,[[[5,8],[4,5]],[[7,7],8]]]						
+[3,[[[5,8],[4,5]],[[7,7],8]]]            
 [[6,[7,[8,2]]],[[9,0],0]]
-[[[8,[7,6]],1],[[2,4],6]]			
+[[[8,[7,6]],1],[[2,4],6]]      
 [[[[0,4],2],[0,7]],[6,6]]
 [1,[[1,9],[9,3]]]
 [[[[5,2],[5,3]],[[9,0],4]],2]
@@ -108,109 +108,109 @@ class String
 end
 
 def explode(str, ndx)
-	x=ndx
-	array=''
-	while str[x] != ']'
-		array+=str[x]
-		x+=1
-	end
-	array = array[1..array.length-1].split(',').map(&:to_i)
-	str=str[0..ndx-1]+'0'+str[x+1..str.length-1]
-	for lNdx in (ndx-1).downto(0)
-		if str[lNdx].is_integer?
-			lVal=[]
-			lEndNdx=lNdx+1
-			while str[lNdx].is_integer?
-				lVal.unshift(str[lNdx])
-				lNdx-=1
-			end
-			str=str[0..lNdx]+(lVal.join.to_i+array[0]).to_s+str[lEndNdx..str.length-1]
-			break
-		end
-	end
-	for rNdx in ndx+2..str.length-1
-		if str[rNdx].is_integer?
-			rVal=""
-			rStartNdx=rNdx-1
-			while str[rNdx].is_integer?
-				rVal+=str[rNdx]
-				rNdx+=1
-			end
-			str=str[0..rStartNdx]+(rVal.to_i+array[1]).to_s+str[rNdx..str.length-1]
-			break
-		end
-	end
-	str
+  x=ndx
+  array=''
+  while str[x] != ']'
+    array+=str[x]
+    x+=1
+  end
+  array = array[1..array.length-1].split(',').map(&:to_i)
+  str=str[0..ndx-1]+'0'+str[x+1..str.length-1]
+  for lNdx in (ndx-1).downto(0)
+    if str[lNdx].is_integer?
+      lVal=[]
+      lEndNdx=lNdx+1
+      while str[lNdx].is_integer?
+        lVal.unshift(str[lNdx])
+        lNdx-=1
+      end
+      str=str[0..lNdx]+(lVal.join.to_i+array[0]).to_s+str[lEndNdx..str.length-1]
+      break
+    end
+  end
+  for rNdx in ndx+2..str.length-1
+    if str[rNdx].is_integer?
+      rVal=""
+      rStartNdx=rNdx-1
+      while str[rNdx].is_integer?
+        rVal+=str[rNdx]
+        rNdx+=1
+      end
+      str=str[0..rStartNdx]+(rVal.to_i+array[1]).to_s+str[rNdx..str.length-1]
+      break
+    end
+  end
+  str
 end
 
 def split(str, ndx, num)
-	newArray=[num/2,num/2]
-	newArray[1]+=1 if num%2!=0
-	str=str[0..ndx]+newArray.to_s.delete(' ')+str[ndx+num.to_s.length+1..str.length-1]
-	str
+  newArray=[num/2,num/2]
+  newArray[1]+=1 if num%2!=0
+  str=str[0..ndx]+newArray.to_s.delete(' ')+str[ndx+num.to_s.length+1..str.length-1]
+  str
 end
 
 def reduce(str)
-	actionPerformed=true
-	while actionPerformed
-		actionPerformed=false
-		depth=0
-		for ndx in 0..str.length-1
-			depth+=1 if str[ndx]=='['
-			depth-=1 if str[ndx]==']'
-			if str[ndx].is_integer?
-				if depth>4
-					actionPerformed=true
-					str=explode(str,ndx-1)
-					break
-				end
-			end
-		end
-		unless actionPerformed
-			for ndx in 0..str.length-1
-				if str[ndx].is_integer?
-					num=""
-					while str[ndx].is_integer?
-						num+=str[ndx]
-						ndx+=1
-					end
-					num=num.to_i
-					if num > 9
-						str=split(str,ndx-(num.to_s.length)-1,num)
-						actionPerformed=true
-						break
-					end
-				end
-			end
-		end
-	end
-	str
+  actionPerformed=true
+  while actionPerformed
+    actionPerformed=false
+    depth=0
+    for ndx in 0..str.length-1
+      depth+=1 if str[ndx]=='['
+      depth-=1 if str[ndx]==']'
+      if str[ndx].is_integer?
+        if depth>4
+          actionPerformed=true
+          str=explode(str,ndx-1)
+          break
+        end
+      end
+    end
+    unless actionPerformed
+      for ndx in 0..str.length-1
+        if str[ndx].is_integer?
+          num=""
+          while str[ndx].is_integer?
+            num+=str[ndx]
+            ndx+=1
+          end
+          num=num.to_i
+          if num > 9
+            str=split(str,ndx-(num.to_s.length)-1,num)
+            actionPerformed=true
+            break
+          end
+        end
+      end
+    end
+  end
+  str
 end
 
 def magnitude(array)
-	array.each_slice(2) do |a,b|
-		a = magnitude(a) if a.kind_of?(Array)
-		b = magnitude(b) if b.kind_of?(Array)
-		return 3*a + 2*b
-	end
+  array.each_slice(2) do |a,b|
+    a = magnitude(a) if a.kind_of?(Array)
+    b = magnitude(b) if b.kind_of?(Array)
+    return 3*a + 2*b
+  end
 end
 
 str=input[0]
 for x in 1..input.length-1
-	str='['+str+','+input[x]+']'
-	str=reduce(str)
+  str='['+str+','+input[x]+']'
+  str=reduce(str)
 end
 
 p magnitude(JSON.parse(str))
 
 max=0
 for x in 0..input.length-1
-	for y in 0..input.length-1
-		next if x==y
-		str='['+input[x]+','+input[y]+']'
-		str=reduce(str)
-		max=[max,magnitude(JSON.parse(str))].max
-	end
+  for y in 0..input.length-1
+    next if x==y
+    str='['+input[x]+','+input[y]+']'
+    str=reduce(str)
+    max=[max,magnitude(JSON.parse(str))].max
+  end
 end
 
 p max
